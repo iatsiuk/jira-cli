@@ -32,6 +32,9 @@ $ jira issue attachment download ISSUE-1 --all --output-dir ./downloads
 
 # Overwrite existing files
 $ jira issue attachment download ISSUE-1 --all --overwrite`
+
+	dirPerm  = 0o755
+	filePerm = 0o644
 )
 
 func NewCmdAttachmentDownload() *cobra.Command {
@@ -109,7 +112,7 @@ func downloadAttachments(cmd *cobra.Command, args []string) {
 		toDownload = attachments
 	}
 
-	if err := os.MkdirAll(params.outputDir, 0o755); err != nil {
+	if err := os.MkdirAll(params.outputDir, dirPerm); err != nil {
 		cmdutil.ExitIfError(fmt.Errorf("failed to create output directory: %w", err))
 	}
 
@@ -194,7 +197,7 @@ func saveAttachment(r io.ReadCloser, dir, filename string, overwrite bool) error
 		flags |= os.O_EXCL
 	}
 
-	f, err := os.OpenFile(path, flags, 0o644)
+	f, err := os.OpenFile(path, flags, filePerm)
 	if err != nil {
 		if os.IsExist(err) {
 			return fmt.Errorf("file %q already exists, use --overwrite to replace", filename)
