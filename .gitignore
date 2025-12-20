@@ -14,3 +14,4 @@ vendor/
 /.gocache
 
 .vscode/
+CLAUDE.md
