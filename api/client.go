@@ -1,6 +1,7 @@
 package api
 
 import (
+	"io"
 	"time"
 
 	"github.com/spf13/viper"
@@ -227,4 +228,15 @@ func ProxyWatchIssue(c *jira.Client, key string, user *jira.User) error {
 		return c.WatchIssueV2(key, assignee)
 	}
 	return c.WatchIssue(key, assignee)
+}
+
+// ProxyGetAttachmentContent uses either a v2 or v3 version of the
+// GET /attachment/content/{id} endpoint to download attachment content.
+// Defaults to v3 if installation type is not defined in the config.
+func ProxyGetAttachmentContent(c *jira.Client, id string) (io.ReadCloser, error) {
+	it := viper.GetString("installation")
+	if it == jira.InstallationTypeLocal {
+		return c.GetAttachmentContentV2(id)
+	}
+	return c.GetAttachmentContent(id)
 }

@@ -122,8 +122,9 @@ type IssueFields struct {
 		InwardIssue  *Issue `json:"inwardIssue,omitempty"`
 		OutwardIssue *Issue `json:"outwardIssue,omitempty"`
 	} `json:"issueLinks"`
-	Created string `json:"created"`
-	Updated string `json:"updated"`
+	Attachments []Attachment `json:"attachment"`
+	Created     string       `json:"created"`
+	Updated     string       `json:"updated"`
 }
 
 // Field holds field info.
@@ -190,4 +191,14 @@ type User struct {
 	Name        string `json:"name,omitempty"`
 	DisplayName string `json:"displayName"`
 	Active      bool   `json:"active"`
+}
+
+type Attachment struct {
+	ID       string `json:"id"`
+	Filename string `json:"filename"`
+	Author   User   `json:"author"`
+	Created  string `json:"created"`
+	Size     int64  `json:"size"`
+	MimeType string `json:"mimeType"`
+	Content  string `json:"content"` // download URL
 }
