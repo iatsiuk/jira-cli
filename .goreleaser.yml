@@ -7,10 +7,6 @@ release:
   draft: false
   mode: "replace"
 
-before:
-  hooks:
-    - go mod tidy
-
 builds:
   - <<: &build_defaults
       binary: bin/jira
