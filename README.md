@@ -38,6 +38,8 @@
     </p>
 </div>
 
+> **Note**: This is a fork of [ankitpokhrel/jira-cli](https://github.com/ankitpokhrel/jira-cli) with added support for downloading attachments from Jira issues. All credits and rights belong to the original authors.
+
 <div>
    <h2 align="center">Supporters</h2>
    <p align="center">
@@ -554,6 +556,40 @@ $ jira issue worklog add ISSUE-1 "2d 3h 30m" --no-input
 
 # You can add a comment using --comment flag when adding a worklog
 $ jira issue worklog add ISSUE-1 "10m" --comment "This is a comment" --no-input
+```
+
+#### Attachment
+The `attachment` command provides sub-commands to manage issue attachments.
+
+##### List
+The `list` command displays all attachments for an issue.
+
+```sh
+# List attachments
+$ jira issue attachment list ISSUE-1
+
+# Output as JSON
+$ jira issue attachment list ISSUE-1 --raw
+```
+
+##### Download
+The `download` command lets you download attachments from an issue.
+
+```sh
+# Download by attachment ID
+$ jira issue attachment download ISSUE-1 --id 12345
+
+# Download by filename
+$ jira issue attachment download ISSUE-1 --name "screenshot.png"
+
+# Download all attachments
+$ jira issue attachment download ISSUE-1 --all
+
+# Download to a specific directory
+$ jira issue attachment download ISSUE-1 --all --output-dir ./downloads
+
+# Overwrite existing files
+$ jira issue attachment download ISSUE-1 --all --overwrite
 ```
 
 ### Epic
