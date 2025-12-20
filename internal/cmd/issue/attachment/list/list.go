@@ -21,6 +21,8 @@ const (
 
 # Output as JSON
 $ jira issue attachment list ISSUE-1 --raw`
+
+	tabWidth = 8
 )
 
 func NewCmdAttachmentList() *cobra.Command {
@@ -100,12 +102,12 @@ func printRaw(attachments []jira.Attachment) {
 }
 
 func printTable(attachments []jira.Attachment) {
-	w := tabwriter.NewWriter(os.Stdout, 0, 8, 1, '\t', 0)
-	fmt.Fprintln(w, "ID\tFILENAME\tSIZE\tAUTHOR\tCREATED")
+	w := tabwriter.NewWriter(os.Stdout, 0, tabWidth, 1, '\t', 0)
+	_, _ = fmt.Fprintln(w, "ID\tFILENAME\tSIZE\tAUTHOR\tCREATED")
 
 	for _, a := range attachments {
 		created := cmdutil.FormatDateTimeHuman(a.Created, jira.RFC3339MilliLayout)
-		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
+		_, _ = fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
 			a.ID,
 			a.Filename,
 			formatSize(a.Size),
@@ -113,7 +115,7 @@ func printTable(attachments []jira.Attachment) {
 			created,
 		)
 	}
-	w.Flush()
+	_ = w.Flush()
 }
 
 func formatSize(bytes int64) string {

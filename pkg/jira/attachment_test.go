@@ -65,7 +65,7 @@ func TestGetAttachmentContent(t *testing.T) {
 	reader, err := client.GetAttachmentContent("10001")
 	assert.NoError(t, err)
 	assert.NotNil(t, reader)
-	defer reader.Close()
+	defer func() { _ = reader.Close() }()
 
 	content, err := io.ReadAll(reader)
 	assert.NoError(t, err)
@@ -127,7 +127,7 @@ func TestGetAttachmentContentV2(t *testing.T) {
 	reader, err := client.GetAttachmentContentV2("10001")
 	assert.NoError(t, err)
 	assert.NotNil(t, reader)
-	defer reader.Close()
+	defer func() { _ = reader.Close() }()
 
 	content, err := io.ReadAll(reader)
 	assert.NoError(t, err)

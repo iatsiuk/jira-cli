@@ -109,7 +109,7 @@ func downloadAttachments(cmd *cobra.Command, args []string) {
 		toDownload = attachments
 	}
 
-	if err := os.MkdirAll(params.outputDir, 0755); err != nil {
+	if err := os.MkdirAll(params.outputDir, 0o755); err != nil {
 		cmdutil.ExitIfError(fmt.Errorf("failed to create output directory: %w", err))
 	}
 
@@ -182,7 +182,7 @@ func downloadOne(client *jira.Client, a jira.Attachment, dir string, overwrite b
 }
 
 func saveAttachment(r io.ReadCloser, dir, filename string, overwrite bool) error {
-	defer r.Close()
+	defer func() { _ = r.Close() }()
 
 	filename = sanitizeFilename(filename)
 	path := filepath.Join(dir, filename)
@@ -194,14 +194,14 @@ func saveAttachment(r io.ReadCloser, dir, filename string, overwrite bool) error
 		flags |= os.O_EXCL
 	}
 
-	f, err := os.OpenFile(path, flags, 0644)
+	f, err := os.OpenFile(path, flags, 0o644)
 	if err != nil {
 		if os.IsExist(err) {
 			return fmt.Errorf("file %q already exists, use --overwrite to replace", filename)
 		}
 		return err
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	_, err = io.Copy(f, r)
 	return err
