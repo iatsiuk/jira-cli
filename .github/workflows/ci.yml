@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [feature/issue-attachment-download]
   pull_request:
 
 jobs:
