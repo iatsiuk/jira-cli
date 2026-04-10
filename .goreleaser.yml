@@ -39,6 +39,17 @@ homebrew_casks:
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
     homepage: "https://github.com/iatsiuk/jira-cli"
     description: "Interactive command-line tool for Jira"
+    hooks:
+      post:
+        install: |
+          system_command "/bin/sh", args: ["-c", "xattr -d com.apple.quarantine '#{staged_path}/jira' 2>/dev/null; true"]
+    caveats: |
+      Quarantine attribute (com.apple.quarantine) is automatically removed
+      from the jira binary during installation to prevent Gatekeeper warnings.
+      See: https://github.com/Homebrew/brew/issues/20755
+
+      To uninstall:
+        brew uninstall --cask iatsiuk/tap/jira
 
 changelog:
   sort: asc
